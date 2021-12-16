@@ -14,5 +14,6 @@ module.exports = {
     enviroment: appConfig.env,
     db: appConfig.db,
     apiVersion: appConfig.apiVersion 
+    // appConfig: appConfig
 
 } // end of module exports

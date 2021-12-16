@@ -1,19 +1,14 @@
 const express = require('express'); // import express into our application
-const app = express(); // creating an application instance 
 const appConfig = require('./config/appConfig');
 const mongoose= require('mongoose');
 const fs  = require('fs');
+const bodyParser = require('body-parser')
 
+const app = express(); // creating an application instance 
 
+app.use(bodyParser.json())
 app.use(express.urlencoded({extended: true})); // this is middleware
 
-// Bootstrap route - creating routes
-const routesPath = './routes';
-fs.readdirSync(routesPath).forEach(function(file){
-  const route = require(routesPath + '/' + file);
-  route.setRouter(app);
-});
-// end of Bootstrap route
 
 // Bootstrap models
 const modelsPath = './models'
@@ -23,6 +18,14 @@ fs.readdirSync(modelsPath).forEach( (file) => {
   }
 })
 // end of Bootstrap models
+
+// Bootstrap route - creating routes
+const routesPath = './routes';
+fs.readdirSync(routesPath).forEach(function(file){
+  const route = require(routesPath + '/' + file);
+  route.setRouter(app);
+});
+// end of Bootstrap route
 
 app.get('/', (req, res) => {
   res.send("Hii your server is running without any error");

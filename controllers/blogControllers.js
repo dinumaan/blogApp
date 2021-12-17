@@ -130,11 +130,40 @@ let editBlog = (req, res) => {
 }
 
 let deleteBlog = (req, res) => {
-
+    BlogModel.deleteOne({'blogId': req.params.blogId}, (err, result) => {
+        if(err){
+            console.log(err);
+            res.send(err)
+        }else if(result == undefined || result == null || result == ''){
+            console.log("No Blog Found")
+            res.send("No Blog Found")
+        }else{
+            res.send(result)
+        }
+    })
 }
 
 let increaseBlogView  = (req, res) => {
-
+    BlogModel.findOne({'blogId': req.params.blogId}, (err, result) => {
+        if(err){
+            console.log(err)
+            res.send(err)
+        }else if(result == undefined || result == '' || result == null){
+            console.log("No Blog Found")
+            res.send("No Blog Found")
+        }else{
+            result.views += 1
+            result.save( (err, result) => {
+                if(err){
+                    console.log(err)
+                    res.send(err)
+                }else{
+                    console.log("Blog updated successfully")
+                    res.send(result)
+                }
+            })
+        }
+    })
 }
 
 module.exports = {

@@ -3,12 +3,19 @@ const appConfig = require('./config/appConfig');
 const mongoose= require('mongoose');
 const fs  = require('fs');
 const bodyParser = require('body-parser')
+const globalErrorMiddleware = require('./middlewares/appErrorHandler')
+
 
 const app = express(); // creating an application instance 
 
-app.use(bodyParser.json())
+// in-built middlewares
 app.use(express.urlencoded({extended: true})); // this is middleware
 
+// external middlewares
+app.use(bodyParser.json())
+
+// error handlers middleware
+app.use(globalErrorMiddleware.globalErrorHandler)
 
 // Bootstrap models
 const modelsPath = './models'
@@ -26,6 +33,9 @@ fs.readdirSync(routesPath).forEach(function(file){
   route.setRouter(app);
 });
 // end of Bootstrap route
+
+app.use(globalErrorMiddleware.globalNotFoundHandler)
+
 
 app.get('/', (req, res) => {
   res.send("Hii your server is running without any error");

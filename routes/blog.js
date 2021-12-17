@@ -5,8 +5,6 @@ const blogControllers = require('../controllers/blogControllers');
 let setRouter = (app) => {
     let baseUrl = '/' + appConfig.apiVersion + '/blogs';
 
-    console.log(baseUrl)
-
     app.get('/test/route/:parm1/:parm2', blogControllers.testRoute)
     app.get('/test/query', blogControllers.testQuery)
     app.post('/test/body', blogControllers.testBody)
